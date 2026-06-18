@@ -1,14 +1,15 @@
-const express = require('express');
-
+const express = require ("express");
+const pool = require("./config/db");
 
 const app = express();
+
 app.use(express.json());
 
-app.get('/', (req,res) => {
-    res.send
+app.get("/", async (req, res) => {
+  const result = await pool.query("SELECT NOW()");
+  res.json(result.rows);
 });
 
-const PORT =5000;
-app.listen(PORT,() => {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(5000, () => {
+  console.log("Server running");
 });
