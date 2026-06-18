@@ -1,15 +1,12 @@
-const express = require ("express");
-const pool = require("./config/db");
+const express = require("express");
+const studentRoutes = require("./routes/studentRoutes");
 
 const app = express();
 
 app.use(express.json());
 
-app.get("/", async (req, res) => {
-  const result = await pool.query("SELECT NOW()");
-  res.json(result.rows);
-});
+app.use("/students", studentRoutes);
 
 app.listen(5000, () => {
-  console.log("Server running");
+  console.log("Server running on port 5000");
 });
