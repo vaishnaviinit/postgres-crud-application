@@ -101,11 +101,48 @@ const updateStudent = async (req, res) => {
 
   }
 };
+//delete students
+
+const deleteStudent = async (req, res) => {
+  try {
+
+    const { id } = req.params;
+
+    const result = await pool.query(                          //Find student with matching id
+      "DELETE FROM students WHERE id = $1  RETURNING *",      //delete it                                        
+      [id]                                                    //return deleted row
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: "Student not found"
+      });
+    }
+
+    res.status(200).json({
+      message: "Student deleted successfully",
+      student: result.rows[0]
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message
+    });
+
+  }
+};
+
+
+
+
+
 
 //exports
 module.exports = {
   createStudent,
   getStudents,
   getStudentById,
-  updateStudent
+  updateStudent,
+  deleteStudent
 };
