@@ -1,9 +1,11 @@
 const express = require("express");
 
+//import
 const {
   createStudent,
   getStudents,
-  getStudentById
+  getStudentById,
+  updateStudent
 } = require("../controllers/studentController");
 
 const router = express.Router();
@@ -11,6 +13,7 @@ const router = express.Router();
 router.post("/", createStudent);
 router.get("/", getStudents);
 router.get("/:id",getStudentById);
+router.put("/:id", updateStudent);
 
 module.exports = router;
 

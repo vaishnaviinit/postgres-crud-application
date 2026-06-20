@@ -68,8 +68,44 @@ const getStudentById = async (req, res) => {
   }
 }
 
+//update students 
+const updateStudent = async (req, res) => {
+  try {
+
+    const { id } = req.params;
+    const { name, email, age } = req.body;
+
+    const result = await pool.query(
+      `UPDATE students
+       SET name = $1,
+           email = $2,
+           age = $3
+       WHERE id = $4
+       RETURNING *`,
+      [name, email, age, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: "Student not found"
+      });
+    }
+
+    res.status(200).json(result.rows[0]);
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message
+    });
+
+  }
+};
+
+//exports
 module.exports = {
   createStudent,
   getStudents,
-  getStudentById
+  getStudentById,
+  updateStudent
 };
